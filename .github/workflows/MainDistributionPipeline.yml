@@ -1,0 +1,32 @@
+#
+# This workflow calls the main distribution pipeline from DuckDB to build, test and (optionally) release the extension
+#
+name: Main Extension Distribution Pipeline
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.head_ref || '' }}-${{ github.base_ref || '' }}-${{ github.ref != 'refs/heads/main' || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  duckdb-stable-build:
+    name: Build extension binaries
+    uses: samansmink/duckdb/.github/workflows/_extension_distribution.yml@c81516f52bf0b62e15e33de868c9fa54f9b65c54
+    with:
+      vcpkg_commit: a42af01b72c28a8e1d7b48107b33e4f286a55ef6
+      duckdb_version: c81516f52b
+      extension_name: aws
+
+  duckdb-stable-deploy:
+    name: Deploy extension binaries
+    needs: duckdb-stable-build
+    uses: samansmink/duckdb/.github/workflows/_extension_deploy.yml@c81516f52bf0b62e15e33de868c9fa54f9b65c54
+    secrets: inherit
+    with:
+      duckdb_version: c81516f52b
+      extension_name: aws
+      deploy_latest: true
+      deploy_versioned: true
