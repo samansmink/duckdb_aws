@@ -8,7 +8,7 @@ project(${TARGET_NAME})
 include_directories(src/include)
 
 set(EXTENSION_SOURCES src/aws_extension.cpp src/aws_secret.cpp)
-add_library(${EXTENSION_NAME} STATIC ${EXTENSION_SOURCES})
+build_static_extension(${TARGET_NAME} ${EXTENSION_SOURCES})
 
 set(PARAMETERS "-warnings")
 build_loadable_extension(${TARGET_NAME} ${PARAMETERS} ${EXTENSION_SOURCES})

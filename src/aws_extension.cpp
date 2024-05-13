@@ -147,6 +147,14 @@ std::string AwsExtension::Name() {
 	return "aws";
 }
 
+std::string AwsExtension::Version() const {
+#ifdef EXT_VERSION_AWS
+	return EXT_VERSION_AWS;
+#else
+	return "";
+#endif
+}
+
 } // namespace duckdb
 
 extern "C" {
