@@ -6,5 +6,4 @@ duckdb_extension_load(aws
     LOAD_TESTS
 )
 
-
 duckdb_extension_load(httpfs)
